@@ -1,0 +1,57 @@
+<div>
+  <a mat-stroked-button routerLink="../song-add">
+    <mat-icon mat-list-icon>add_circle_outline</mat-icon>
+    Add Song
+  </a>
+  <button mat-stroked-button (click)="deleteSelectedSongs()">Delete</button>
+</div>
+
+<h3 *ngIf="datastore.getSongs().length == 0">No songs yet!</h3>
+
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8">>
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                    >
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)"
+                    >
+      </mat-checkbox>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+  <ng-container matColumnDef="artist">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Artist </th>
+    <td mat-cell *matCellDef="let element"> {{element.artist}} </td>
+  </ng-container>
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element; let i = index" [attr.colspan]="3">
+      <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div *ngIf="element.key !== null">Key: {{element.key}} </div>
+        <div *ngIf="element.tabs !== null">Tabs: <a  href="{{element.tabs}}" target="_blank">Link</a> </div>
+        <div *ngIf="element.youtube !== null">Youtube: <a href="{{element.youtube}}" target="_blank">Link</a> </div>
+        <div *ngIf="element.spotify !== null">Spotify: <a href="{{element.spotify}}" target="_blank">Link</a> </div>
+        <div *ngIf="element.deezer !== null">Deezer: <a href="{{element.deezer}}" target="_blank">Link</a> </div>
+        <a mat-stroked-button (click)="openDialog(element)">
+          Edit
+        </a>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['select', 'name', 'artist']"></tr>
+  <tr mat-row *matRowDef="let element; columns: ['select', 'name', 'artist'];" class="example-element-row"
+    [class.example-expanded-row]="expandedElement === element"
+    (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>

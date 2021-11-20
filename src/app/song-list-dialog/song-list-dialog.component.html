@@ -1,0 +1,42 @@
+<form [formGroup]="entryGroup" (ngSubmit)="onSubmit($event)">
+    <div mat-dialog-content>
+        <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput [formControl]="nameCtrl" [(ngModel)]="data.name">
+            <mat-error *ngIf="nameCtrl.hasError('required')">Name is required.</mat-error>
+            <mat-error *ngIf="nameCtrl.hasError('maxlength')">Max 30 characters.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Artist</mat-label>
+            <input matInput [formControl]="artistCtrl" [(ngModel)]="data.artist">
+            <mat-error *ngIf="artistCtrl.hasError('required')">Artist is required.</mat-error>
+            <mat-error *ngIf="artistCtrl.hasError('maxlength')">Max 30 characters.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Tabs</mat-label>
+            <input matInput [formControl]="tabsCtrl" [(ngModel)]="data.tabs">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Key</mat-label>
+            <input matInput [formControl]="keyCtrl" [(ngModel)]="data.key">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Youtube</mat-label>
+            <input matInput [formControl]="youtubeCtrl" [(ngModel)]="data.youtube">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Spotify</mat-label>
+            <input matInput [formControl]="spotifyCtrl" [(ngModel)]="data.spotify">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Deezer</mat-label>
+            <input matInput [formControl]="deezerCtrl" [(ngModel)]="data.deezer">
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-stroked-button color="Basic" [mat-dialog-close]="data">Save</button>
+        <button mat-stroked-button color="Basic" (click)="onNoClick()">Cancel</button>
+
+    </div>
+
+</form>

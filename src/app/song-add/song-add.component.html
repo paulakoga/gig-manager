@@ -1,0 +1,42 @@
+<form [formGroup]="entryGroup" (ngSubmit)="onSubmit($event)">
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput [formControl]="nameCtrl">
+        <mat-error *ngIf="nameCtrl.hasError('required')">Name is required.</mat-error>
+        <mat-error *ngIf="nameCtrl.hasError('maxlength')">Max 30 characters.</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Artist</mat-label>
+        <input matInput [formControl]="artistCtrl">
+        <mat-error *ngIf="artistCtrl.hasError('required')">Artist is required.</mat-error>
+        <mat-error *ngIf="artistCtrl.hasError('maxlength')">Max 30 characters.</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Tabs</mat-label>
+        <input matInput [formControl]="tabsCtrl">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Key</mat-label>
+        <input matInput [formControl]="keyCtrl">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Youtube</mat-label>
+        <input matInput [formControl]="youtubeCtrl">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Spotify</mat-label>
+        <input matInput [formControl]="spotifyCtrl">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Deezer</mat-label>
+        <input matInput [formControl]="deezerCtrl">
+    </mat-form-field>
+
+    <div>
+        <button mat-stroked-button color="Basic">Save</button>
+        <a mat-stroked-button routerLink="../song-list">
+            Cancel
+          </a>
+    </div>
+
+</form>

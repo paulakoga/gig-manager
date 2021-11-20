@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'GigManager';
+  title: string = 'Gig Manager';
+
+  changeTitle(activeComponentTitle: string){
+    this.title = activeComponentTitle;
+  }
 }

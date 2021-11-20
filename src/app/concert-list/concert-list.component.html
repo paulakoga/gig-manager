@@ -1,0 +1,56 @@
+<div>
+    <a mat-stroked-button routerLink="../concert-add">
+      <mat-icon mat-list-icon>add_circle_outline</mat-icon>
+      Add Concert
+    </a>
+    <button mat-stroked-button (click)="deleteSelectedConcerts()">Delete</button>
+  </div>
+  
+  <h3 *ngIf="datastore.getConcerts().length == 0">No concerts yet!</h3>
+  
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8">>
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                      >
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)"
+                      >
+        </mat-checkbox>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="venue">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Venue </th>
+      <td mat-cell *matCellDef="let element"> {{element.venue}} </td>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+      <td mat-cell *matCellDef="let element"> {{getDate(element.date)}} </td>
+    </ng-container>
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element; let i = index" [attr.colspan]="3">
+        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div *ngIf="element.timeStart !== null">Time Start: {{element.timeStart}} </div>
+          <div *ngIf="element.timeEnd !== null">Time End: {{element.timeEnd}} </div>
+          <div *ngIf="element.address !== null">Address: {{element.address}} </div>
+          <div *ngIf="element.setlist !== null">Setlist: {{element.setlist}} </div>
+          <a mat-stroked-button (click)="openDialog(element)">
+            Edit
+          </a>
+        </div>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="['select', 'venue', 'date']"></tr>
+    <tr mat-row *matRowDef="let element; columns: ['select', 'venue', 'date'];" class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
