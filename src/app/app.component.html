@@ -22,8 +22,12 @@
         </a>
       </div>
       <a mat-list-item routerLink="song-list" (click)="drawer.toggle()">
-        <mat-icon mat-list-icon>queue_music</mat-icon>
+        <mat-icon mat-list-icon>music_note</mat-icon>
         Songs
+      </a>
+      <a mat-list-item routerLink="setlist-list" (click)="drawer.toggle()">
+        <mat-icon mat-list-icon>queue_music</mat-icon>
+        Setlists
       </a>
       <mat-divider></mat-divider>
       <a mat-list-item routerLink="about" (click)="drawer.toggle()">

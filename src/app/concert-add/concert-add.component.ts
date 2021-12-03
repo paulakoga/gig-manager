@@ -32,7 +32,10 @@ export class ConcertAddComponent implements OnInit {
 
   constructor(public datastore: DatastoreService) { }
 
+  setlists: {id: number, name: string}[] = this.datastore.getSetlist();
+
   ngOnInit(): void {
+
   }
 
   onSubmit(event: Event){

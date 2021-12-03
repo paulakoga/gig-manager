@@ -1,0 +1,51 @@
+<div>
+    <a mat-stroked-button routerLink="../setlist-add">
+      <mat-icon mat-list-icon>add_circle_outline</mat-icon>
+      Add Setlist
+    </a>
+    <button mat-stroked-button (click)="deleteSelectedSetlists()">Delete</button>
+  </div>
+  
+  <h3 *ngIf="datastore.getSetlist().length == 0">No setlists yet!</h3>
+  
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8">>
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                      >
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)"
+                      >
+        </mat-checkbox>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element; let i = index" [attr.colspan]="3">
+        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <a mat-stroked-button (click)="openDialog(element)">
+            Edit
+          </a>
+          <a mat-stroked-button >
+            Print
+          </a>
+        </div>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="['select', 'name']"></tr>
+    <tr mat-row *matRowDef="let element; columns: ['select', 'name'];" class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>

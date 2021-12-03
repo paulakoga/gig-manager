@@ -7,29 +7,54 @@ import { Injectable, Input } from '@angular/core';
 
 export class DatastoreService {
 
-  private songs: {name: string, artist: string, tabs: string, key: string, youtube: string, spotify: string, deezer: string}[] = [];
+  private songs: {id: number, name: string, artist: string, tabs: string, key: string, youtube: string, spotify: string, deezer: string}[] = [];
   private concerts: {venue: string, date: Date, timeStart: string, timeEnd: string, address: string, setlist: number}[] = [];
+  private setlists: {id: number, name: string, songs: number[]}[] = [];
+  //private setlistSongs: {setlistId: number, songId: number}[] = [];
+  private setlistId: number = 0;
+  private songId: number = 0;
   
 
-
   constructor() {
-    const savedData = window.localStorage.getItem('songs');
-    if (savedData !== null){
-      this.songs = JSON.parse(savedData);
+    const songData = window.localStorage.getItem('songs');
+    if (songData !== null){
+      this.songs = JSON.parse(songData);
     }
-    const savedData2 = window.localStorage.getItem('concerts');
-    if (savedData2 !== null){
-      this.concerts = JSON.parse(savedData2);
+    const concertData = window.localStorage.getItem('concerts');
+    if (concertData !== null){
+      this.concerts = JSON.parse(concertData);
+    }
+    const setlistData = window.localStorage.getItem('setlists');
+    if (setlistData !== null){
+      this.setlists = JSON.parse(setlistData);
+    }
+    // const setlistSongData = window.localStorage.getItem('setlistSongs');
+    // if (setlistSongData !== null){
+    //   this.setlistSongs = JSON.parse(setlistSongData);
+    // }
+    const setlistIdData = window.localStorage.getItem('setlistId');
+    if (setlistIdData !== null){
+      this.setlistId = JSON.parse(setlistIdData);
+    }
+    const songIdData = window.localStorage.getItem('songId');
+    if (songIdData !== null){
+      this.setlistId = JSON.parse(songIdData);
     }
   }
 
   private saveChanges(){
     window.localStorage.setItem('songs', JSON.stringify(this.songs));
     window.localStorage.setItem('concerts', JSON.stringify(this.concerts));
+    window.localStorage.setItem('setlists', JSON.stringify(this.setlists));
+   // window.localStorage.setItem('setlistSongs', JSON.stringify(this.setlistSongs));
+    window.localStorage.setItem('setlistId', JSON.stringify(this.setlistId));
+    window.localStorage.setItem('songId', JSON.stringify(this.setlistId));
   }
 
   addSong(name: string, artist: string, tabs: string, key: string, youtube: string, spotify: string, deezer: string){
-    this.songs.push({name: name, artist: artist, tabs: tabs, key: key, youtube: youtube, spotify: spotify, deezer: deezer});
+    let newId = this.songId + 1;
+    this.songs.push({id: newId, name: name, artist: artist, tabs: tabs, key: key, youtube: youtube, spotify: spotify, deezer: deezer});
+    this.songId = newId;
     this.saveChanges();
   }
 
@@ -77,5 +102,38 @@ export class DatastoreService {
     this.concerts.splice(i, 1);
     this.saveChanges();
   }
+
+  addSetlist(name: string){
+    let newId = this.setlistId + 1;
+    this.setlists.push({id: newId, name: name, songs: []});
+    this.setlistId = newId;
+    this.saveChanges();
+  }
+
+  updateSetlist(index: number, name: string, songs: number[]){
+    this.setlists[index].name = name;
+    this.setlists[index].songs = songs;
+    this.saveChanges();
+  }
+
+
+  getSetlist(){
+    return (this.setlists);
+  }
+
+  deleteSetlist(i: number){
+    this.setlists.splice(i, 1);
+    this.saveChanges();
+  }
+
+  // updteSetlistSongs(list: {setlistId: number, songId: number}[]){
+  //   this.setlistSongs = list;
+  //   this.saveChanges();
+  // }
+
+
+  // getSetlistSongs(){
+  //   return (this.setlistSongs);
+  // }
 
 }

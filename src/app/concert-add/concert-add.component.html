@@ -28,14 +28,17 @@
     </mat-form-field>
     <mat-form-field appearance="fill">
         <mat-label>Setlist</mat-label>
-        <input matInput [formControl]="setlistCtrl">
+        <mat-select [formControl]="setlistCtrl">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let item of setlists" [value]="item.id">{{item.name}}</mat-option>
+        </mat-select>
     </mat-form-field>
 
     <div>
         <button mat-stroked-button color="Basic">Save</button>
         <a mat-stroked-button routerLink="../concert-list">
             Cancel
-          </a>
+        </a>
     </div>
 
 </form>

@@ -37,14 +37,6 @@ export class SongListDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(event: Event){
-    // if (this.entryGroup.valid){
-    //   //process valid form data
-    //   this.datastore.addSong(this.nameCtrl.value, this.artistCtrl.value, this.tabsCtrl.value, this.keyCtrl.value, this.youtubeCtrl.value, this.spotifyCtrl.value, this.deezerCtrl.value);
-    //   (event.currentTarget as HTMLFormElement).reset();
-    // }
-  }
-
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -52,6 +44,7 @@ export class SongListDialogComponent implements OnInit {
 }
 
 export interface DialogData {
+  id: number;
   name: string;
   artist: string;
   tabs: string;

@@ -26,7 +26,10 @@ import { ConcertListComponent } from './concert-list/concert-list.component';
 import { ConcertListDialogComponent } from './concert-list-dialog/concert-list-dialog.component';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-
+import { SetlistListComponent } from './setlist-list/setlist-list.component';
+import { SetlistAddComponent } from './setlist-add/setlist-add.component';
+import { SetlistListDialogComponent } from './setlist-list-dialog/setlist-list-dialog.component';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -39,7 +42,10 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     SongListDialogComponent,
     ConcertAddComponent,
     ConcertListComponent,
-    ConcertListDialogComponent
+    ConcertListDialogComponent,
+    SetlistListComponent,
+    SetlistAddComponent,
+    SetlistListDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +64,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     ReactiveFormsModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent],

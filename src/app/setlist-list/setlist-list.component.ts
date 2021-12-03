@@ -6,13 +6,12 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {MatSort} from '@angular/material/sort';
 import {AfterViewInit, ViewChild} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { SongListDialogComponent } from '../song-list-dialog/song-list-dialog.component';
-
+import { SetlistListDialogComponent } from '../setlist-list-dialog/setlist-list-dialog.component';
 
 @Component({
-  selector: 'app-song-list',
-  templateUrl: './song-list.component.html',
-  styleUrls: ['./song-list.component.scss'],
+  selector: 'app-setlist-list',
+  templateUrl: './setlist-list.component.html',
+  styleUrls: ['./setlist-list.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),
@@ -21,23 +20,22 @@ import { SongListDialogComponent } from '../song-list-dialog/song-list-dialog.co
     ]),
   ],
 })
-export class SongListComponent implements AfterViewInit {
+export class SetlistListComponent implements AfterViewInit {
 
-  pageTitle: string = "Song List";
+  pageTitle: string = "Setlist List";
 
+  id: number = 0;
   name: string = "";
-  artist: string = "";
-  tabs: string = "";
-  key: string = "";
-  youtube: string = "";
-  spotify: string = "";
-  deezer: string = "";
+  songs: number[] = [];
 
-  constructor(public datastore: DatastoreService, public dialog: MatDialog ) {}
+  //setlistSongs: {setlistId: number, songId: number}[] = [];
 
-  dataSource = new MatTableDataSource(this.datastore.getSongs());
-  expandedElement!: Song | null;
-  selection = new SelectionModel<Song>(true, []);
+
+  constructor(public datastore: DatastoreService, public dialog: MatDialog) { }
+
+  dataSource = new MatTableDataSource(this.datastore.getSetlist());
+  expandedElement!: Setlist | null;
+  selection = new SelectionModel<Setlist>(true, []);
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
@@ -63,35 +61,43 @@ export class SongListComponent implements AfterViewInit {
 
   openDialog(element: DialogData): void {
 
-    let index: number = this.datastore.getSongs().findIndex(d => d == element);
+    let index: number = this.datastore.getSetlist().findIndex(d => d == element);
 
-    const dialogRef = this.dialog.open(SongListDialogComponent, {
-      width: '250px',
-      data: {name: element.name, artist: element.artist, tabs: element.tabs, key: element.key, youtube: element.youtube, spotify: element.spotify, deezer: element.deezer},
+    const dialogRef = this.dialog.open(SetlistListDialogComponent, {
+      width: '100%',
+      data: {id: element.id, name: element.name, songs: element.songs},
     });
 
     dialogRef.afterClosed().subscribe(result => {
       element = result;
+      console.log(element)
       if (element != null){
-        this.datastore.updateSong(index, element.name, element.artist, element.tabs, element.key, element.youtube, element.spotify, element.deezer)
+
+        this.datastore.updateSetlist(index, element.name, element.songs)
+
       }
     });
   }
 
-  deleteSelectedSongs() {
+  deleteSelectedSetlists() {
     this.selection.selected.forEach(item => {
-       let index: number = this.datastore.getSongs().findIndex(d => d == item);
-       this.datastore.deleteSong(index)
+       let index: number = this.datastore.getSetlist().findIndex(d => d == item);
+       this.datastore.deleteSetlist(index)
      });
-    this.dataSource.data = this.datastore.getSongs();
+    this.dataSource.data = this.datastore.getSetlist();
 
-    this.selection = new SelectionModel<Song>(true, []);
+    this.selection = new SelectionModel<Setlist>(true, []);
   }
 
 }
+export interface Setlist {
+  id: number;
+  name: string;
+  songs: number[];
+}
 
 export interface Song {
-  id: number
+  id: number; 
   name: string;
   artist: string;
 }
@@ -99,15 +105,5 @@ export interface Song {
 export interface DialogData {
   id: number;
   name: string;
-  artist: string;
-  tabs: string;
-  key: string;
-  youtube: string;
-  spotify: string;
-  deezer: string;
+  songs: number[];
 }
-
-
-
-
-

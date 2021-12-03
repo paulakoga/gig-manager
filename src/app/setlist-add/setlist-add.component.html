@@ -1,0 +1,15 @@
+<form [formGroup]="entryGroup" (ngSubmit)="onSubmit($event)">
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput [formControl]="nameCtrl">
+        <mat-error *ngIf="nameCtrl.hasError('required')">Name is required.</mat-error>
+        <mat-error *ngIf="nameCtrl.hasError('maxlength')">Max 30 characters.</mat-error>
+    </mat-form-field>
+    <div>
+        <button mat-stroked-button color="Basic">Save</button>
+        <a mat-stroked-button routerLink="../setlist-list">
+            Cancel
+          </a>
+    </div>
+
+</form>
